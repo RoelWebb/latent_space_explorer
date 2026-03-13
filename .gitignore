@@ -1,4 +1,7 @@
 /DeepSDF/
 
-/cars_vessels_airplanes/
-/splits/
+/experiments/*
+!/experiments/.gitkeep
+
+/splits/*
+!/splits/.gitkeep
