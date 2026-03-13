@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # Copyright 2004-present Facebook. All Rights Reserved.
 
-# NOTE This script is a very slighlty adjusted version of the mesh.py script in the DeepSDF paper implementation written by Park et al.
+# NOTE This script is a very slighlty adjusted version of the deep_sdf/mesh.py script in the DeepSDF paper implementation written by Park et al. (https://github.com/facebookresearch/DeepSDF)
 
 import logging
 import numpy as np
