@@ -34,4 +34,4 @@ requires = ["setuptools"]
 build-backend = "setuptools.build_meta"
 
 [project.urls]
-repository = "https://github.com" # TODO Add correct github url
+repository = "https://github.com/RoelWebb/latent_space_explorer"
