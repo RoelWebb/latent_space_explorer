@@ -45,7 +45,7 @@ The application consists of a code selection tab and shape interpolation tab, bo
 Latent space explorer is released under the MIT License for its permissive open-source use and distribution, as stated in the [LICENSE file](LICENSE).
 
 ## Acknowledgement
-The script [mesh_VARIATION.py](src/latent_space_explorer/utils/mesh_VARIATION.py) is a direct copy of `deep_sdf/mesh.py` from [DeepSDF](https://github.com/facebookresearch/DeepSDF) with very minor adjustments.
+The script [mesh_VARIATION.py](src/latent_space_explorer/utils/mesh_VARIATION.py) is a direct copy of [`deep_sdf/mesh.py`](https://github.com/facebookresearch/DeepSDF/blob/main/deep_sdf/mesh.py) from [DeepSDF](https://github.com/facebookresearch/DeepSDF) with very minor adjustments.
 
 ## Future todos
 - [ ] Profile code for performance bottlenecks (try decreasing points where DeepSDF is infered and check repeated self.vao_mesh initialization in [mesh.py](src/latent_space_explorer/UI/mesh.py))
