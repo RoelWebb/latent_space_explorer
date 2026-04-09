@@ -1,12 +1,11 @@
+![Demo](application_screen_record.gif)
+
 # Latent code explorer (DeepSDF)
 This application enables the exploration of a learned latent space of the [DeepSDF](https://github.com/facebookresearch/DeepSDF) model proposed by *Park et al.*. For the demo, a smaller model of the proposed *DeepSDF* architecture was trained on a subset of 3 categories (vessels, cars and airplanes) from the [ShapeNetCore](https://huggingface.co/datasets/ShapeNet/ShapeNetCore) (v2) dataset, with roughly 200 shapes each.
 
 To intuitively visualize the learned 64 dimensional latent code per shape, they are projected to a reduced dimensionality of 2. Selecting an arbitrary point in this 2D space, barycentric weights are calculated to calculate a weighted latent code, which is reconstructed to a new 3D shape. Finally, 2 latent codes can be selected and interpolated.
 
-## Demo
-![Demo](application_screen_record.gif)
-
-## Installation
+## Install
 
 ```bash
 git clone https://github.com/RoelWebb/latent_space_explorer && cd latent_space_explorer
