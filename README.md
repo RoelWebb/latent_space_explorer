@@ -22,19 +22,29 @@ cd splits
 wget -O cars_vessels_airplanes_train.json "https://drive.google.com/uc?export=download&id=15MFd-__SyXKUjmoOrmPO_WaOPSs5liL0" && cd ..
 ```
 
+### Using uv (Recommended)
 ```bash
 # Setup venv environment and install dependencies
-python3.10 -m venv .venv
+uv sync
+```
+
+### Using pip
+```bash
+# Setup venv environment and install dependencies
+python3.10 -m latent_space_explorer .venv
 source .venv/bin/activate
 
 pip install torch==2.0.1 --index-url https://download.pytorch.org/whl/cu118
 pip install tsnecuda==3.0.1+cu118 -f  https://tsnecuda.isx.ai/tsnecuda_stable.html
 pip install -e .
+deactivate
 ```
+
 
 ## Running the application
 To run the implementation, run the following command from the project directory root:
 ```bash
+source .venv/bin/activate
 python src/latent_space_explorer/app.py
 ```
 
