@@ -7,7 +7,7 @@ authors = [{name = "Roel Webb"}]
 requires-python = ">=3.10, <3.11"
 
 dependencies = [
-  "torch == 2.0.1",
+  "torch == 2.0.1+cu118",
   "numpy >= 1.25.2, <2.0.0",
   
   "pyqt5 >= 5.15.10",

@@ -7,6 +7,8 @@ To intuitively visualize the learned 64 dimensional latent code per shape, they 
 
 ## Install
 
+### Clone repos and download data files
+
 ```bash
 git clone https://github.com/RoelWebb/latent_space_explorer && cd latent_space_explorer
 git clone https://github.com/facebookresearch/DeepSDF.git
@@ -22,23 +24,27 @@ cd splits
 wget -O cars_vessels_airplanes_train.json "https://drive.google.com/uc?export=download&id=15MFd-__SyXKUjmoOrmPO_WaOPSs5liL0" && cd ..
 ```
 
-### Using uv (Recommended)
+### uv install dependencies (recommended)
 ```bash
 # Setup venv environment and install dependencies
 uv sync
 ```
 
-### Using pip
+
+<details>
+<summary>pip install dependencies</summary>
+
 ```bash
 # Setup venv environment and install dependencies
-python3.10 -m latent_space_explorer .venv
+python3.10 -m venv .venv
 source .venv/bin/activate
 
-pip install torch==2.0.1 --index-url https://download.pytorch.org/whl/cu118
+pip install torch==2.0.1+cu118 --index-url https://download.pytorch.org/whl/cu118
 pip install tsnecuda==3.0.1+cu118 -f  https://tsnecuda.isx.ai/tsnecuda_stable.html
 pip install -e .
 deactivate
 ```
+</details>
 
 
 ## Running the application
@@ -57,7 +63,6 @@ Latent space explorer is released under the MIT License for its permissive open-
 The script [mesh_VARIATION.py](src/latent_space_explorer/utils/mesh_VARIATION.py) is a direct copy of [`deep_sdf/mesh.py`](https://github.com/facebookresearch/DeepSDF/blob/main/deep_sdf/mesh.py) from [DeepSDF](https://github.com/facebookresearch/DeepSDF) with very minor adjustments.
 
 ## Future todos
-- [ ] Update install section to include uv pip install . and add explicit paths to pyproject.toml for cleaner install
 - [ ] Profile code for performance bottlenecks (try decreasing points where DeepSDF is infered and check repeated self.vao_mesh initialization in [mesh.py](src/latent_space_explorer/UI/mesh.py))
 - [ ] Check correct stretching/sizing of reduced dimensionality plot for click position and draw reduced dimensionality with PyQt for higher resolution (clicking outside scatter points should not update the mesh)
 - [ ] Add more pretrained neural networks such as Spaghetti
