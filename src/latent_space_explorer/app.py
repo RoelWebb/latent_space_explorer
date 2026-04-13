@@ -2,11 +2,6 @@ import os
 import sys
 from PyQt5 import QtWidgets # TODO potentially update to PyQt6
 
-project_path = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
-package_path = os.path.join(project_path, 'src/latent_space_explorer')
-# Make latent_space_explorer package visible to run from project dir
-sys.path.insert(0, os.path.dirname(package_path))
-
 from latent_space_explorer.custom_types import ShapeType
 from latent_space_explorer.app_manager import AppManager
 from latent_space_explorer.utils.dim_reduction import DimReductionType
@@ -16,6 +11,8 @@ from latent_space_explorer.UI.interpolation import InterpolationWidget
 from latent_space_explorer.UI.dim_reduction import DimReductionWidget
 from latent_space_explorer.UI.latent_code import CodeImgWidget
 from latent_space_explorer.UI.mesh import MeshWidget
+
+project_path = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 
 category = 'cars_vessels_airplanes'
 

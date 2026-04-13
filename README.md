@@ -43,7 +43,7 @@ python install_data_files.py
 ## Run the app
 Run the following command from the project directory root:
 ```bash
-python src/latent_space_explorer/app.py
+python -m src.latent_space_explorer.app
 ```
 
 The application consists of a tab for code selection and shape interpolation, both with a menu to adjust relevant parameters (shape resolution is only updated after a new code selection). The code selection tab contains the reduced dimensionality map (top-left) to select a new single latent code with a left-click and an additional latent code with right-click to enable shape interpolation in the interpolation tab by adjusting the slider. The shape code visualization (bottom-left) enables increasing or decreasing of a selected latent code element with left- or right-click respectively.
