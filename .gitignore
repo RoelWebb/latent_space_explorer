@@ -4,8 +4,6 @@ __pycache__/
 uv.lock
 *egg-info/
 
-# /DeepSDF/
-
 /experiments/*
 !/experiments/.gitkeep
 

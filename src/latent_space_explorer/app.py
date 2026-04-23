@@ -34,7 +34,7 @@ latent_codes_path = os.path.join(experiment_path, 'LatentCodes/latest.pth')
 split_path = os.path.join(project_path, 'splits', f'{category}_train.json')
 split_dataset_name = 'ShapeNetV2'
 
-shaders_dir_path = os.path.join(package_path, 'shaders')
+shaders_dir_path = os.path.join(project_path, 'src/latent_space_explorer', 'shaders')
 
 # Output paths
 out_dir = os.path.join(experiment_path, 'out')

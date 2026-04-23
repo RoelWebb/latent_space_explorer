@@ -9,7 +9,7 @@ To intuitively visualize the learned 64 dimensional latent code per shape, they 
 
 ```bash
 # Clone latent space explorer repo and DeepSDF model
-git clone ----recursive https://github.com/RoelWebb/latent_space_explorer 
+git clone --recursive https://github.com/RoelWebb/latent_space_explorer 
 cd latent_space_explorer
 ```
 
