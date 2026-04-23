@@ -1,7 +1,10 @@
 __pycache__/
 
 .venv
-/DeepSDF/
+uv.lock
+*egg-info/
+
+# /DeepSDF/
 
 /experiments/*
 !/experiments/.gitkeep

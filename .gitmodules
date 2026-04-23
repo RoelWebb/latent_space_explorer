@@ -1,0 +1,3 @@
+[submodule "DeepSDF"]
+	path = DeepSDF
+	url = https://github.com/facebookresearch/DeepSDF.git
