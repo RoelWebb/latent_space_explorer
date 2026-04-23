@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 # Copyright 2004-present Facebook. All Rights Reserved.
 
-# NOTE This script is a very slighlty adjusted version of the deep_sdf/mesh.py script in the DeepSDF paper implementation written by Park et al. (https://github.com/facebookresearch/DeepSDF)
+# NOTE This script is a very slighlty adjusted version of the deep_sdf/mesh.py script in the DeepSDF paper implementation
+# written by Park et al. (https://github.com/facebookresearch/DeepSDF)
 
 from latent_space_explorer.config import Config
 
@@ -14,6 +15,7 @@ import torch
 import json
 
 import sys
+
 
 def create_mesh(
     decoder, latent_vec, filename, N=256, max_batch=32 ** 3, offset=None, scale=None
@@ -56,9 +58,9 @@ def create_mesh(
     head = 0
 
     while head < num_samples:
-        sample_subset = samples[head : min(head + max_batch, num_samples), 0:3].to(device=Config.device)
+        sample_subset = samples[head: min(head + max_batch, num_samples), 0:3].to(device=Config.device)
 
-        samples[head : min(head + max_batch, num_samples), 3] = (
+        samples[head: min(head + max_batch, num_samples), 3] = (
             decode_sdf(decoder, latent_vec, sample_subset)
             .squeeze(1)
             .detach()
@@ -105,8 +107,8 @@ def convert_sdf_samples_to_ply(
     numpy_3d_sdf_tensor = pytorch_3d_sdf_tensor.numpy()
 
     level = 0.0
-    volume = np.array(numpy_3d_sdf_tensor, dtype=np.float32) 
-    
+    volume = np.array(numpy_3d_sdf_tensor, dtype=np.float32)
+
     if level > volume.min() and level < volume.max():
         # Surface level is inside volume which is defined by numpy_3d_sdf_tensor
         verts, faces, normals, values = skimage.measure.marching_cubes(numpy_3d_sdf_tensor, level=0.0, spacing=[voxel_size] * 3)
@@ -114,7 +116,6 @@ def convert_sdf_samples_to_ply(
         print(f"[Warning] Surface level is not within volume ranging from {volume.min()} to {volume.max()}")
         # Quick solution for error caused by surface level being outside volume range (level=volume.min()+0.00001)
         verts, faces, normals, values = skimage.measure.marching_cubes(numpy_3d_sdf_tensor, level=volume.min()+0.00001, spacing=[voxel_size] * 3)
-    
 
     # transform from voxel coordinates to camera coordinates
     # NOTE x and y are flipped in the output of marching_cubes
@@ -159,6 +160,7 @@ def convert_sdf_samples_to_ply(
         )
     )
 
+
 def decode_sdf(decoder, latent_vector, queries):
     '''Returns sdf values of input latent vector and positional sample subset'''
     num_samples = queries.shape[0]
@@ -175,9 +177,9 @@ def decode_sdf(decoder, latent_vector, queries):
 
 
 class Shape_reconstructor():
-    def __init__(self, config : Config):
+    def __init__(self, config: Config):
         specs = json.load(open(config.specs_path))
-        
+
         # Add DeepSDF to python path to correctly find the networks folder
         sys.path.append(config.model_path)
         arch = __import__("networks." + specs["NetworkArch"], fromlist=["Decoder"])
@@ -189,6 +191,6 @@ class Shape_reconstructor():
         decoder.load_state_dict(saved_model_state["model_state_dict"])
         self.decoder = decoder.module.to(device=config.device)
         self.decoder.eval()
-    
+
     def reconstruct_shape(self, latent_input, out_path_ply, mesh_resolution):
         create_mesh(self.decoder, latent_input, out_path_ply, N=mesh_resolution, max_batch=int(2 ** 18))

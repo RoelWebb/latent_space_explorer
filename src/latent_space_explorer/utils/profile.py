@@ -3,6 +3,7 @@ import torch
 
 from latent_space_explorer.config import Config
 
+
 class Profiler():
     def __init__(self, config: Config):
         self.start = None
@@ -10,7 +11,7 @@ class Profiler():
         self.message = None
         self.device = config.device
 
-    def start_timer(self, message : str) -> None:
+    def start_timer(self, message: str) -> None:
         self.message = message
 
         if self.device != 'cpu':
@@ -19,9 +20,9 @@ class Profiler():
             self.start.record()
         else:
             self.start = time.time()
-        
+
     def report_elapsed_time(self):
-        if self.device != 'cpu':    
+        if self.device != 'cpu':
             self.end.record()
             torch.cuda.synchronize()
 

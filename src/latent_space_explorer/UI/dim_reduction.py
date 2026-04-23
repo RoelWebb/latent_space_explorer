@@ -4,20 +4,22 @@ from PyQt5.QtCore import pyqtSignal, Qt
 
 from latent_space_explorer.app_manager import AppManager
 
-class DimReductionWidget(QLabel):
-    """Widget for displaying dimensionality reduction and calling app manager shape reconstruction with mouse click 2D coordinates in reduced dimensions"""
-    clicked_dim_reduction = pyqtSignal(float, float, int) # pixel_x, pixel_y, button
 
-    def __init__(self, app_manager : AppManager):
+class DimReductionWidget(QLabel):
+    """Widget for displaying dimensionality reduction and calling app manager shape reconstruction
+    with mouse click 2D coordinates in reduced dimensions"""
+    clicked_dim_reduction = pyqtSignal(float, float, int)  # pixel_x, pixel_y, button
+
+    def __init__(self, app_manager: AppManager):
         super().__init__()
 
         app_manager.dim_reduction_changed.connect(self.update_dim_reduction_type)
         self.clicked_dim_reduction.connect(app_manager.reduced_dim_click)
-        
+
         self.handle_size = 14
         self.left_click_pos, self.right_click_pos = None, None
         self.dim_reduction_plot = None
-        
+
         self.set_dim_reduction_plot(app_manager.plot_paths[app_manager.dim_reduction_type])
 
     def set_dim_reduction_plot(self, image_path) -> QPixmap:
@@ -33,9 +35,11 @@ class DimReductionWidget(QLabel):
         for pen in [black_pen, white_pen]:
             painter.setPen(pen)
             if self.left_click_pos is not None:
-                painter.drawEllipse(self.left_click_pos[0] - int(0.5 * self.handle_size), self.left_click_pos[1]  - int(0.5 * self.handle_size), self.handle_size, self.handle_size)
+                painter.drawEllipse(self.left_click_pos[0] - int(0.5 * self.handle_size),
+                                    self.left_click_pos[1] - int(0.5 * self.handle_size), self.handle_size, self.handle_size)
             if self.right_click_pos is not None:
-                painter.drawEllipse(self.right_click_pos[0] - int(0.5 * self.handle_size), self.right_click_pos[1]  - int(0.5 * self.handle_size), self.handle_size, self.handle_size)
+                painter.drawEllipse(self.right_click_pos[0] - int(0.5 * self.handle_size),
+                                    self.right_click_pos[1] - int(0.5 * self.handle_size), self.handle_size, self.handle_size)
 
         painter.end()
 
@@ -44,20 +48,20 @@ class DimReductionWidget(QLabel):
 
         x_fract = event.pos().x() / self.width()
         y_fract = event.pos().y() / self.height()
-        self.clicked_dim_reduction.emit(x_fract, y_fract, event.button()) # Call reconstruction method of app_manager
+        self.clicked_dim_reduction.emit(x_fract, y_fract, event.button())  # Call reconstruction method of app_manager
 
         self.update()
 
-    def set_clicked_pos(self, x : int, y : int, button : int) -> None:
+    def set_clicked_pos(self, x: int, y: int, button: int) -> None:
         if button == 1:
-            self.left_click_pos = (x,y)
+            self.left_click_pos = (x, y)
             self.right_click_pos = None
         elif button == 2:
-            self.right_click_pos = (x,y)
+            self.right_click_pos = (x, y)
 
-    def update_dim_reduction_type(self, image_path : str) -> None:
+    def update_dim_reduction_type(self, image_path: str) -> None:
         self.set_dim_reduction_plot(image_path)
-        self.left_click_pos, self.right_click_pos = None, None # Remove handles
+        self.left_click_pos, self.right_click_pos = None, None  # Remove handles
         self.update()
 
 
