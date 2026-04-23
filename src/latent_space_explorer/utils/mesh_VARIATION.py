@@ -3,6 +3,8 @@
 
 # NOTE This script is a very slighlty adjusted version of the deep_sdf/mesh.py script in the DeepSDF paper implementation written by Park et al. (https://github.com/facebookresearch/DeepSDF)
 
+from latent_space_explorer.config import Config
+
 import logging
 import numpy as np
 import plyfile
@@ -54,7 +56,7 @@ def create_mesh(
     head = 0
 
     while head < num_samples:
-        sample_subset = samples[head : min(head + max_batch, num_samples), 0:3].cuda()
+        sample_subset = samples[head : min(head + max_batch, num_samples), 0:3].to(device=Config.device)
 
         samples[head : min(head + max_batch, num_samples), 3] = (
             decode_sdf(decoder, latent_vec, sample_subset)
@@ -173,19 +175,19 @@ def decode_sdf(decoder, latent_vector, queries):
 
 
 class Shape_reconstructor():
-    def __init__(self, specs_filename, model_parameters_filename, DeepSDF_path, device):
-        specs = json.load(open(specs_filename))
+    def __init__(self, config : Config):
+        specs = json.load(open(config.specs_path))
         
         # Add DeepSDF to python path to correctly find the networks folder
-        sys.path.append(DeepSDF_path)
+        sys.path.append(config.model_path)
         arch = __import__("networks." + specs["NetworkArch"], fromlist=["Decoder"])
 
         latent_size = specs["CodeLength"]
         decoder = arch.Decoder(latent_size, **specs["NetworkSpecs"])
         decoder = torch.nn.DataParallel(decoder)
-        saved_model_state = torch.load(model_parameters_filename)
+        saved_model_state = torch.load(config.model_params_path, map_location=torch.device(config.device))
         decoder.load_state_dict(saved_model_state["model_state_dict"])
-        self.decoder = decoder.module.to(device=device)
+        self.decoder = decoder.module.to(device=config.device)
         self.decoder.eval()
     
     def reconstruct_shape(self, latent_input, out_path_ply, mesh_resolution):

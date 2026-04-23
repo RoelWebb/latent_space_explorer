@@ -5,6 +5,7 @@ from PyQt5.QtCore import QObject, pyqtSignal
 
 from torch_pca import PCA
 
+from latent_space_explorer.config import Config
 from latent_space_explorer.custom_types import CodeSpace, VisualizeShapeMode, ShapeType
 from latent_space_explorer.utils.profile import Profiler
 from latent_space_explorer.utils.IO import load_latent_codes
@@ -23,49 +24,40 @@ class AppManager(QObject):
     rotation_speed_changed = pyqtSignal(int)
     code_img_changed = pyqtSignal(np.ndarray)
     
-    def __init__(self,
-                 device : str,
-                 perplexity : int, mesh_res_selection : int, mesh_resolution_interpolation : int,
-                 base_color : tuple,
-                 model_path : str, specs_path : str, model_param_path : str, latent_codes_path : str,
-                 shaders_dir_path,
-                 plot_dim_reduction_paths : dict, mesh_paths : dict,
-                 category_name : str, objects_json_path : str, dataset_name : str):
+    def __init__(self, config : Config):
         super().__init__()
         
         # TODO: look at existing profiler packages
-        self.profiler = Profiler()
+        self.profiler = Profiler(config)
 
-        self.device = device # Only for the network and its input
+        self.device = config.device # Only for the network and its input
 
         # Visualization parameters
         self.visualize_mode = VisualizeShapeMode.SINGLE
         self.code_space = CodeSpace.PCA
         self.dim_reduction_type = DimReductionType.tSNE
-        self.perplexity = perplexity
-        self.mesh_res_selection = mesh_res_selection
-        self.mesh_res_interpolation = mesh_resolution_interpolation
+        self.perplexity = config.perplexity
+        self.mesh_res_selection = config.mesh_res_selection
+        self.mesh_res_interpolation = config.mesh_res_interpolation
         self.img_value_step = 0.1 # Fraction steps for adjusting latent codes on latent img selection
         self.rotations_per_minute = 8
-        self.base_color = base_color
+        self.base_color = config.base_color
 
         # Set paths
-        self.latent_codes_path = latent_codes_path
-        self.shaders_dir_path = shaders_dir_path
-        self.plot_paths = plot_dim_reduction_paths
-        self.mesh_paths = mesh_paths
+        self.latent_codes_path = config.latent_codes_path
+        self.shaders_dir_path = config.shaders_dir_path
+        self.plot_paths = config.plot_dim_reduction_paths
+        self.mesh_paths = config.mesh_paths
 
         # Load all latent codes for later distance weighting
         self.latent_codes = load_latent_codes(self.latent_codes_path).detach().cpu().numpy()
         
         # Initialize shape_reconstructor and laten code input
-        self.shape_reconstructor = mesh.Shape_reconstructor(specs_path, model_param_path, model_path, device)
-        self.active_shape_codes = torch.zeros((3, self.latent_codes.shape[1]), device=device)
+        self.shape_reconstructor = mesh.Shape_reconstructor(config)
+        self.active_shape_codes = torch.zeros((3, self.latent_codes.shape[1]), device=self.device)
         
         # Perform dimensionality reduction and save plots
-        self.dim_reductions = get_reduced_dims(self.latent_codes, self.plot_paths, self.perplexity,
-                                                  category_name, objects_json_path, dataset_name,
-                                                  base_color=self.base_color)
+        self.dim_reductions = get_reduced_dims(self.latent_codes, config=config)
 
         # Fit PCA model to latent codes
         self.pca_model = PCA()

@@ -1,0 +1,13 @@
+[flake8]
+exclude = 
+    __pycache__,
+    .venv,
+    .git,
+    DeepSDF,
+    experiments,
+    splits,
+    build,
+    *.egg-info
+    
+max-line-length = 127
+max-complexity = 10
