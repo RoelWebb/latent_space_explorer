@@ -59,3 +59,5 @@ The script [mesh_VARIATION.py](src/latent_space_explorer/utils/mesh_VARIATION.py
 - [ ] Check correct stretching/sizing of reduced dimensionality plot for click position and draw reduced dimensionality with PyQt for higher resolution (clicking outside scatter points should not update the mesh)
 - [ ] Add more pretrained neural networks such as Spaghetti
 - [ ] Train model on more points per shape and more shapes for higher shape quality
+- [ ] Decouple processing (LatenExplorer from ui to enable easier testing and different file structure such as ui, core, app)
+- [ ] Add test files and pytest (headless: set_selection_res / reduced_dim_click / code_click / linear_interpolate)
